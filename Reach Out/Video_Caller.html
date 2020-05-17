@@ -1,0 +1,120 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand">
+            <img src="logo.jpg" width="30" height="30" class="d-inline-block align-top" alt="">&nbsp;Reach Out
+            
+
+    </a>     
+    </nav>
+    <style>
+
+.video_caller
+{
+
+	position: relative;
+	padding-bottom: 20px;
+
+
+}
+.brand
+ {
+     background-color: #00bfff
+
+
+
+ }
+ .form_signin
+ {
+     width: 100%;
+     max-width:500px ;
+     padding: 20px;
+     margin: auto;
+
+
+
+ }
+
+ .btn-primary
+ {
+     background-color: #00bfff
+
+
+
+ }
+
+
+
+    
+    </style>
+    </head>
+<body class="text-center">
+
+        <dialog>
+                <span id = "dialogText"></span><br>
+                <button class="btn-floating btn-large waves-effect waves-light green" id="callAccept"><i class="material-icons">video_call</i></button>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <button class="btn-floating btn-large waves-effect waves-light red" id="callReject"><i class="material-icons">call_end</i></button>
+             
+            </dialog>
+<br><br>   
+
+
+<div id="Video_Caller" class="video_caller">
+
+    <div class="container-fluid">     
+
+        <video id="localVideo" class="localVideo mirror"  playsinline autoplay></video>		
+        <video id="remoteVideo" class="remoteVideo"  playsinline autoplay></video>
+     <div class="in_call_button center-align button_loc" id = "button_block">
+	 &emsp;&emsp;<button class="btn-floating btn-large waves-effect waves-light blue scale-transition scale-out" id="camButton"><i id ="cam_icon" class="material-icons">videocam</i></button>&emsp;&emsp;
+        <button class="btn-floating btn-large waves-effect waves-light red scale-transition scale-out" id="callEnd"><i class="material-icons">call_end</i></button>&emsp;&emsp;
+        <button class="btn-floating btn-large waves-effect waves-light blue scale-transition scale-out" id="screenShare"><i class="material-icons">screen_share</i></button>&emsp;&emsp;
+		   <button class="btn-floating btn-large waves-effect waves-light blue scale-transition scale-out" id="micButton"><i id ="mic_icon" class="material-icons">mic</i></button>
+     </div>
+    </div>  
+
+
+
+</div>
+<div id="Caller">
+
+        <h1 class="h3 mb-3 font-weight-normal">Enter User Id</h1>
+      
+        <form class="form_signin">
+            <div class="form-group">
+                <label class="sr-only">Callee's User ID</label>
+                <br>
+                
+                <input type="text" class="form-control" id="user_id" placeholder="Enter User_Id">
+            </div>
+           <button type="button" class="btn btn-primary" id ="callButton">Call</button>           
+     <!---
+         <button class="btn-floating btn-large waves-effect waves-light blue" id="callButton"><i class="material-icons">video_call</i></button>
+     -->
+        </form>        
+
+
+
+</div>
+
+
+</body>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="main_scripy.js"></script>
+</body>
+</html>
