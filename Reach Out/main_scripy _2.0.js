@@ -247,7 +247,7 @@ console.log(error);
 
 }
 
-pc1.ontrack =  async(event) =>
+pc1.ontrack =  async({transceiver, streams: [stream]}) =>
 {
    
     let recievedStream = event.streams[0];
@@ -274,6 +274,7 @@ pc1.ontrack =  async(event) =>
      //   {
           //   setupDataChannel();
     //    }
+
 
     
 }
@@ -386,10 +387,10 @@ socket.on('client_message',async (data)=>{
                 await localStream.getTracks().forEach((track)=>
                 {
                   if(track.kind === "video")  
-                     rtc_sender_video =   pc1.addTrack(track,localStream);
+                     pc1.addTransciever(track,localStream);
                   
-                  else(track.kind === "audio")
-                     rtc_sender_audio =  pc1.addTrack(track,localStream);
+                  else if(track.kind === "audio")
+                     rtc_sender_audio =  pc1.addTransciever(track,localStream);
             
                 });
             
@@ -601,12 +602,12 @@ function recieveVideoCall()
     {
         if(track.kind === "video")  
         {    track.label ="peerVideo";   
-             rtc_sender_video =   pc1.addTrack(track,localStream);
+             rtc_sender_video =   pc1.addTransciever(track,localStream);
          
 
         }
         else if(track.kind === "audio")
-            rtc_sender_audio =  pc1.addTrack(track,localStream);
+            rtc_sender_audio =  pc1.addTransciever(track,localStream);
         
     });
     
@@ -625,7 +626,7 @@ camButton.onclick = async()=>
             camIcon.innerHTML = "videocam_off";
             camButton.classList.add("grey");
             camButton.classList.remove("blue");
-            pc1.removeTrack(rtc_sender_video);
+            rtc_sender_video.sender.track.enabled = false;
             localStream.getVideoTracks().forEach((track)=>
 			{
             
@@ -644,13 +645,15 @@ camButton.onclick = async()=>
             camButton.classList.remove("grey");
             
             
+            rtc_sender_video.sender.track.enabled = true;
             localStream.getVideoTracks().forEach((track)=>
 			{
             
                 track.enabled = true;
 
 			});
-        
+            
+            rtc_sender_video.sender.track.enabled = true;
             
         
 
@@ -678,12 +681,12 @@ screenShareButton.onclick = async()=>
                         
                         
                             track.label ="peerScreen";                         
-                             rtc_sender.replaceTrack(track);
+                             rtc_sender_video.sender.replaceTrack(track);
                              track.onended = async()=>{
                             // dataChannel.send({screenSharingStarted: false, screenSharingEnded: ended});
                              localStream.getVideoTracks().forEach((track)=>{
                              track.label = "peerVideo";
-                             rtc_sender.replaceTrack(track);
+                             rtc_sender_video.sender.replaceTrack(track);
         
                             });
                           }
@@ -711,7 +714,7 @@ screenShareButton.onclick = async()=>
 
           // dataChannel.send({screenSharingStarted: false, screenSharingEnded: true});
          await localStream.getVideoTracks().forEach((track)=>{
-            rtc_sender.replaceTrack(track);
+            rtc_sender_video.sender.replaceTrack(track);
             });
          await  userDisplayStream.getVideoTracks().forEach((track)=>{
 
@@ -741,7 +744,7 @@ micButton.onclick = async()=>
         mic_icon.innerHTML = "mic_mute";
         micButton.classList.remove("blue");
         mic_icon.classList.add("grey");
-        pc1.removeTrack(rtc_sender_audio);
+
     }
 
 
