@@ -625,7 +625,6 @@ camButton.onclick = async()=>
             camIcon.innerHTML = "videocam_off";
             camButton.classList.add("grey");
             camButton.classList.remove("blue");
-            pc1.removeTrack(rtc_sender_video);
             localStream.getVideoTracks().forEach((track)=>
 			{
             
