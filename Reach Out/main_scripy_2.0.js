@@ -387,10 +387,10 @@ socket.on('client_message',async (data)=>{
                 await localStream.getTracks().forEach((track)=>
                 {
                   if(track.kind === "video")  
-                     pc1.addTransceiver(track,localStream);
+                     pc1.addTransceiver(track,{streams:[localStream]});
                   
                   else if(track.kind === "audio")
-                     rtc_sender_audio =  pc1.addTransceiver(track,localStream);
+                     rtc_sender_audio =  pc1.addTransceiver(track,{streams:[localStream]});
                      
                 });
             
@@ -602,12 +602,12 @@ function recieveVideoCall()
     {
         if(track.kind === "video")  
         {    track.label ="peerVideo";   
-             rtc_sender_video =   pc1.addTransceiver(track,localStream);
+             rtc_sender_video =   pc1.addTransceiver(track,{streams:[localStream]});
          
 
         }
         else if(track.kind === "audio")
-            rtc_sender_audio =  pc1.addTransceiver(track,localStream);
+            rtc_sender_audio =  pc1.addTransceiver(track,{streams:[localStream]});
         
     });
     
