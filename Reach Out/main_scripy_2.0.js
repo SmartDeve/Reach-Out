@@ -250,7 +250,7 @@ console.log(error);
 pc1.ontrack =  async({transceiver, streams: [stream]}) =>
 {
    
-    let recievedStream = event.streams[0];
+    let recievedStream = streams[0];
     let videoTrackKind = recievedStream.getVideoTracks()[0].kind;
 
     if(videoTrackKind === "peerScreen")
