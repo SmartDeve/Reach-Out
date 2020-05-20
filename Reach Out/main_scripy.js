@@ -198,7 +198,28 @@ let localStream;
 //Caller
 const configuration = {iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
 pc1 = new RTCPeerConnection(configuration);
+dataChannel = pc1.createDataChannel("data channel");
+dataChannel.onmessage = onDataRecieved;
+dataChannel.addEventListener('open',async(event)=>
+    {
+        console.log("opened");
+        muteButton.disabled = false;
 
+
+
+    });
+
+
+    dataChannel.addEventListener('close',async(event)=>
+    {
+        muteButton.disabled = true;
+        
+        console.log("closed");
+
+
+    });
+
+ 
 
 pc1.oniceconnectionstatechange= async()=>
 {
@@ -253,7 +274,7 @@ pc1.ontrack =  async(event) =>
 {
    
     let recievedStream = event.streams[0];
-    let videoTrackKind = recievedStream.getVideoTracks()[0].kind;
+    let videoTrackKind = recievedStream.getVideoTracks()[0].contentHint;
 
     if(videoTrackKind === "peerScreen")
         {
@@ -304,43 +325,9 @@ function onDataRecieved(event)
 
 async function setupDataChannel()
 {
-    dataChannel = pc1.createDataChannel("data channel");
-    dataChannel.onmessage = onDataRecieved;
-    dataChannel.addEventListener('open',async(event)=>
-    {
-        console.log("opened");
-        muteButton.disabled = false;
+    
 
-
-
-    });
-
-
-    dataChannel.addEventListener('close',async(event)=>
-    {
-        muteButton.disabled = true;
-        
-        console.log("closed");
-
-
-    });
-
-   dataChannel.addEventListener('message',async (event)=>{
-
-        let data = event.data;
-        if(data.type == "MEDIA_SETTINGS")
-           {
-                if(data.isMute === true)       
-                    remoteVideo.muted = true;
-                else(data.isMute === false)    
-                    remoteVideo.muted = false;
-          
-
-                }
-
-   });
-
-
+pc
 }
 /*
 function setupMyVideo()
@@ -612,7 +599,7 @@ function recieveVideoCall()
     localStream.getTracks().forEach((track)=>
     {
         if(track.kind === "video")  
-        {    track.label ="peerVideo";   
+        {    track.contentHint ="peerVideo";   
              rtc_sender_video =   pc1.addTrack(track,localStream);
         }
         else if(track.kind === "audio")
@@ -699,12 +686,12 @@ screenShareButton.onclick = async()=>
                     {
                         
                         
-                            track.label ="peerScreen";                         
+                            track.contentHint ="peerScreen";                         
                              rtc_sender_video.replaceTrack(track);
                              track.onended = async()=>{
                             // dataChannel.send({screenSharingStarted: false, screenSharingEnded: ended});
                              localStream.getVideoTracks().forEach((track)=>{
-                             track.label = "peerVideo";
+                             track.contentHint = "peerVideo";
                              rtc_sender_video.replaceTrack(track);
         
                             });
