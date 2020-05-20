@@ -388,7 +388,7 @@ socket.on('client_message',async (data)=>{
                   if(track.kind === "video")  
                      rtc_sender_video =   pc1.addTrack(track,localStream);
                   
-                  else(track.kind === "audio")
+                  else if(track.kind === "audio")
                      rtc_sender_audio =  pc1.addTrack(track,localStream);
             
                 });
