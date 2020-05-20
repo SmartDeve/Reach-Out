@@ -59,9 +59,7 @@ border-block-end-color: black;
  padding-left: 100px;
  padding-right: 100px;
  padding-top:10px;
- transform: rotateY(180deg);
- -webkit-transform:rotateY(180deg); /* Safari and Chrome */
- -moz-transform:rotateY(180deg);
+
  }
 
 

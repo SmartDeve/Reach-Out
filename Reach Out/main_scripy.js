@@ -57,6 +57,8 @@ let isCalling = false;
 let userDisplayStream;
 let rtc_sender_audio;
 let rtc_sender_video;
+let rtcTranceiever_audio;
+let rtcTranceiever_video;
 screenShareButton.enabled = false;
 /*
 localVideo.addEventListener('loadedmetadata',async()=>{
@@ -392,6 +394,16 @@ socket.on('client_message',async (data)=>{
                      rtc_sender_audio =  pc1.addTrack(track,localStream);
             
                 });
+               /* await pc1.getTransceivers().forEach(tran=>
+                    {
+                        if(tran.sender.track.kind === "video")
+                            rtcTranceiever_video = tran;
+            
+                        else if(tran.sender.track.kind ==="audio")
+                            rtcTranceiever_audio = tran;
+            
+                    });     
+            */
             
                 await pc1.setLocalDescription(await pc1.createAnswer());   
                 await socket.emit("server_message",
@@ -602,15 +614,23 @@ function recieveVideoCall()
         if(track.kind === "video")  
         {    track.label ="peerVideo";   
              rtc_sender_video =   pc1.addTrack(track,localStream);
-         
-
         }
         else if(track.kind === "audio")
             rtc_sender_audio =  pc1.addTrack(track,localStream);
         
     });
-    
-  
+    /*
+    pc1.getTransceivers().forEach(tran=>
+        {
+            if(tran.sender.track.kind === "video")
+                rtcTranceiever_video = tran;
+
+            else if(tran.sender.track.kind ==="audio")
+                rtcTranceiever_audio = tran;
+
+        });     
+
+  */
 
 
 }
@@ -625,6 +645,8 @@ camButton.onclick = async()=>
             camIcon.innerHTML = "videocam_off";
             camButton.classList.add("grey");
             camButton.classList.remove("blue");
+			
+            
             localStream.getVideoTracks().forEach((track)=>
 			{
             
@@ -641,6 +663,7 @@ camButton.onclick = async()=>
             camIcon.innerHTML = "videocam";
             camButton.classList.add("blue");
             camButton.classList.remove("grey");
+           // rtcTranceiever_video.direction = "sendrecv"
             
             
             localStream.getVideoTracks().forEach((track)=>
@@ -677,12 +700,12 @@ screenShareButton.onclick = async()=>
                         
                         
                             track.label ="peerScreen";                         
-                             rtc_sender.replaceTrack(track);
+                             rtc_sender_video.replaceTrack(track);
                              track.onended = async()=>{
                             // dataChannel.send({screenSharingStarted: false, screenSharingEnded: ended});
                              localStream.getVideoTracks().forEach((track)=>{
                              track.label = "peerVideo";
-                             rtc_sender.replaceTrack(track);
+                             rtc_sender_video.replaceTrack(track);
         
                             });
                           }
@@ -710,7 +733,7 @@ screenShareButton.onclick = async()=>
 
           // dataChannel.send({screenSharingStarted: false, screenSharingEnded: true});
          await localStream.getVideoTracks().forEach((track)=>{
-            rtc_sender.replaceTrack(track);
+            rtc_sender_video.replaceTrack(track);
             });
          await  userDisplayStream.getVideoTracks().forEach((track)=>{
 
