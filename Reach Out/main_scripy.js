@@ -198,28 +198,8 @@ let localStream;
 //Caller
 const configuration = {iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
 pc1 = new RTCPeerConnection(configuration);
-dataChannel = pc1.createDataChannel("data channel");
-dataChannel.onmessage = onDataRecieved;
-dataChannel.addEventListener('open',async(event)=>
-    {
-        console.log("opened");
-        muteButton.disabled = false;
-
-
-
-    });
-
-
-    dataChannel.addEventListener('close',async(event)=>
-    {
-        muteButton.disabled = true;
-        
-        console.log("closed");
-
-
-    });
-
- 
+/*
+ */
 
 pc1.oniceconnectionstatechange= async()=>
 {
@@ -293,10 +273,10 @@ pc1.ontrack =  async(event) =>
     screenShareButton.hidden = false;
     callEndButton.hidden = false;
 
-  //  if(!dataChannel)
-     //   {
-          //   setupDataChannel();
-    //    }
+  
+
+     setupDataChannel();
+
 
     
 }
@@ -327,7 +307,27 @@ async function setupDataChannel()
 {
     
 
-pc
+dataChannel = pc1.createDataChannel("data channel");
+dataChannel.onmessage = onDataRecieved;
+dataChannel.addEventListener('open',async(event)=>
+    {
+        console.log("opened");
+        muteButton.disabled = false;
+
+
+
+    });
+
+
+    dataChannel.addEventListener('close',async(event)=>
+    {
+        muteButton.disabled = true;
+        
+        console.log("closed");
+
+
+    });
+
 }
 /*
 function setupMyVideo()
