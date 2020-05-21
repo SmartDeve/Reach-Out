@@ -274,10 +274,19 @@ pc1.ontrack =  async(event) =>
     callEndButton.hidden = false;
 
   
+    if(isCaller)
+        setupDataChannel();
 
-     setupDataChannel();
 
-
+    else
+        pc1.ondatachannel = async (event)=>
+        {
+            dataChannel = event.channel;
+            dataChannel.onmessage = onDataRecieved;
+            dataChannel.onopen = onOpenChannelCallback;
+            dataChannel.onclose = onClosedChannelCallBack;  
+            console.log(dataChannel);
+        }
     
 }
 
@@ -302,31 +311,32 @@ function onDataRecieved(event)
 
 }
 
-
-async function setupDataChannel()
-{
-    
-
-dataChannel = pc1.createDataChannel("data channel");
-dataChannel.onmessage = onDataRecieved;
-dataChannel.addEventListener('open',async(event)=>
+let onOpenChannelCallback = async(event)=>
     {
         console.log("opened");
         muteButton.disabled = false;
 
 
 
-    });
+    };
 
 
-    dataChannel.addEventListener('close',async(event)=>
+let onClosedChannelCallBack  = async(event)=>
     {
         muteButton.disabled = true;
         
         console.log("closed");
 
 
-    });
+    };
+async function setupDataChannel()
+{
+    
+
+dataChannel = pc1.createDataChannel("data channel",null);
+dataChannel.onmessage = onDataRecieved;
+dataChannel.onopen = onOpenChannelCallback;
+dataChannel.onclose = onClosedChannelCallBack;  
 
 }
 /*
