@@ -75,7 +75,7 @@
     <div class="container-fluid">     
 
         <video id="localVideo" class="localVideo mirror"  playsinline autoplay></video>		
-        <video id="remoteVideo" class="remoteVideo"  playsinline autoplay></video>
+        <video id="remoteVideo" class="remoteVideo responsive-video"  playsinline autoplay></video>
      <div class="in_call_button center-align button_loc" id = "button_block">
 	 &emsp;&emsp;<button class="btn-floating btn-large waves-effect waves-light blue scale-transition scale-out" id="camButton"><i id ="cam_icon" class="material-icons">videocam</i></button>&emsp;&emsp;
         <button class="btn-floating btn-large waves-effect waves-light red scale-transition scale-out" id="callEnd"><i class="material-icons">call_end</i></button>&emsp;&emsp;
@@ -108,7 +108,7 @@
 
 </div>
 
-
+<audio loop hidden = true id ="tone">
 </body>
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script src="node_modules/socket.io-client/dist/socket.io.js"></script>

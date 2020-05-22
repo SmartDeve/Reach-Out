@@ -40,6 +40,7 @@ let dataChannel;
 const user_id = document.getElementById('user_id');
 const video_caller_mode = document.getElementById('Video_Caller');
 const picInPicButton = document.getElementById('test');
+const tonePlayer = document.querySelector('audio');
 let textArea = document.createElement('textarea');
 caller_mode.hidden=false;
 video_caller_mode.hidden = true;
@@ -60,6 +61,7 @@ let rtc_sender_video;
 let rtcTranceiever_audio;
 let rtcTranceiever_video;
 screenShareButton.enabled = false;
+
 /*
 localVideo.addEventListener('loadedmetadata',async()=>{
 /*  
@@ -274,7 +276,7 @@ pc1.ontrack =  async(event) =>
     callEndButton.hidden = false;
 
   
-    if(isCaller)
+    if(isCalling)
         setupDataChannel();
 
 
@@ -331,9 +333,12 @@ let onClosedChannelCallBack  = async(event)=>
     };
 async function setupDataChannel()
 {
-    
+    const dataChannelOptions = {
+  ordered: false, // do not guarantee order
+  maxPacketLifeTime: 3000, // in milliseconds
+};
 
-dataChannel = pc1.createDataChannel("data channel",null);
+dataChannel = pc1.createDataChannel("channel",dataChannelOptions);
 dataChannel.onmessage = onDataRecieved;
 dataChannel.onopen = onOpenChannelCallback;
 dataChannel.onclose = onClosedChannelCallBack;  
@@ -587,11 +592,15 @@ socket.on('requested_caller_details',(caller_details)=>
 
 socket.on('call_answer',(answer_obj)=>{
 
-    if(answer_obj.acceptance === true)
-         startVideoCall();
-    else
-        alert('Call Denied');    
 
+	tonePlayer.pause();
+    if(answer_obj.acceptance === true)
+	{
+		startVideoCall();
+	}    else
+	{ 
+       alert('Call Denied');    
+	}
 
 });
 
@@ -786,6 +795,7 @@ callButton.onclick = async ()=>
     user_caller_id = user_id.value;
     
     try{
+			
     caller_mode.hidden = true;
     video_caller_mode.hidden = false;
     await navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
@@ -794,6 +804,11 @@ callButton.onclick = async ()=>
         localVideo.srcObject = mediastream;
       
     });
+	
+	
+	tonePlayer.srcObject = "callerTone.mp3";
+	tonePlayer.play();
+	
     }catch(error)
     {
         console.log(error);
