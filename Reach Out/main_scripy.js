@@ -66,10 +66,7 @@ let rtcTranceiever_video;
 let peerMode = true;
 screenShareButton.enabled = false;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 553638586ecaf1225559bf6306fac6bf78591906
 /*
 localVideo.addEventListener('loadedmetadata',async()=>{
 /*  
@@ -287,26 +284,7 @@ pc1.ontrack =  async(event) =>
 	micButton.hidden = false;
 	camButton.hidden = false;
 
-<<<<<<< HEAD
-  
-    if(isCalling)
-=======
-  /*
-    if(isCaller)
->>>>>>> 553638586ecaf1225559bf6306fac6bf78591906
-        setupDataChannel();
-
-
-    else
-        pc1.ondatachannel = async (event)=>
-        {
-            dataChannel = event.channel;
-            dataChannel.onmessage = onDataRecieved;
-            dataChannel.onopen = onOpenChannelCallback;
-            dataChannel.onclose = onClosedChannelCallBack;  
-            console.log(dataChannel);
-        }
-		*/
+      
     
 }
 
@@ -602,8 +580,16 @@ socket.on('requested_caller_details',(caller_details)=>
          call_request_object.caller_soc_id = myId;
          call_request_object.callee_id = callDetails.callee_id;
          console.log(call_request_object);
+         tonePlayer.srcObject = "callerTone.mp3";
+         tonePlayer.play();
          socket.emit('send_call_request',call_request_object);
+
           
+}
+else{
+	alert('User does not exist');
+    
+
 }
 
 
@@ -635,16 +621,31 @@ function recieveVideoCall()
 */
  function  startVideoCall()
 {    
-    localStream.getTracks().forEach((track)=>
-    {
-        if(track.kind === "video")  
-        {    track.contentHint ="peerVideo";   
-             rtc_sender_video =   pc1.addTrack(track,localStream);
-        }
-        else if(track.kind === "audio")
-            rtc_sender_audio =  pc1.addTrack(track,localStream);
-        
+    try{
+    await navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
+    {   
+        localStream = mediastream;    
+        localVideo.srcObject = mediastream;
+
+        localStream.getTracks().forEach((track)=>
+        {
+            if(track.kind === "video")  
+            {    track.contentHint ="peerVideo";   
+                 rtc_sender_video =   pc1.addTrack(track,localStream);
+            }
+            else if(track.kind === "audio")
+                rtc_sender_audio =  pc1.addTrack(track,localStream);
+            
+        });
     });
+	
+}catch(error)
+{
+
+    console.log('media error:'+error);
+
+
+}
     /*
     pc1.getTransceivers().forEach(tran=>
         {
@@ -797,7 +798,7 @@ micButton.onclick = async()=>
 }
 callButton.onclick = async ()=>
 {
-   
+   /*
     try{
 
         
@@ -811,15 +812,16 @@ callButton.onclick = async ()=>
 
 
     }
+    */
     document.body.style.backgroundColor = "black";
     isCalling = true;
     user_caller_id = user_id.value;
     
-    try{
 			
     caller_mode.hidden = true;
     video_caller_mode.hidden = false;
-    await navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
+    getUserDetails(user_caller_id);
+    /*await navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
     {   
         localStream = mediastream;    
         localVideo.srcObject = mediastream;
@@ -835,6 +837,7 @@ callButton.onclick = async ()=>
         console.log(error);
 
     }
+    */
 /*
     try{
         if(localVideo!==document.pictureInPictureElement)
@@ -844,12 +847,13 @@ callButton.onclick = async ()=>
         
         }
         catch(error){
+
             console.log(error);
     
         }
 */
 
-        getUserDetails(user_caller_id);
+        
 
 }
 
