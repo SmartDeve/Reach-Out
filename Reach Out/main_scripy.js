@@ -45,6 +45,9 @@ caller_mode.hidden=false;
 video_caller_mode.hidden = true;
 callEndButton.hidden = true;
 screenShareButton.hidden = true;
+micButton.hidden = true;
+camButton.hidden = true;
+
 let callDetails;
 let isMute = false;
 let isCameraOff = false;
@@ -59,7 +62,10 @@ let rtc_sender_audio;
 let rtc_sender_video;
 let rtcTranceiever_audio;
 let rtcTranceiever_video;
+let peerMode = true;
 screenShareButton.enabled = false;
+
+
 /*
 localVideo.addEventListener('loadedmetadata',async()=>{
 /*  
@@ -254,26 +260,30 @@ pc1.ontrack =  async(event) =>
 {
    
     let recievedStream = event.streams[0];
+/*
     let videoTrackKind = recievedStream.getVideoTracks()[0].contentHint;
 
-    if(videoTrackKind === "peerScreen")
+    if(peerMode === true)
         {
             if(remoteVideo.classList.contains('mirror') ===true)    
                 remoteVideo.classList.remove('mirror');    
-            
+            peerMode = false;
         }
-    else if(videoTrackKind === "peerVideo"){
+    else if(peerMode === false){
         if(!(remoteVideo.classList.contains('mirror') ===true))    
              remoteVideo.classList.add('mirror');
 
+            peerMode = true;     
     }    
-    
+    */
     remoteVideo.srcObject = event.streams[0];
     remoteVideo.focus();
     screenShareButton.hidden = false;
     callEndButton.hidden = false;
+	micButton.hidden = false;
+	camButton.hidden = false;
 
-  
+  /*
     if(isCaller)
         setupDataChannel();
 
@@ -287,6 +297,7 @@ pc1.ontrack =  async(event) =>
             dataChannel.onclose = onClosedChannelCallBack;  
             console.log(dataChannel);
         }
+		*/
     
 }
 
@@ -329,6 +340,7 @@ let onClosedChannelCallBack  = async(event)=>
 
 
     };
+	/*
 async function setupDataChannel()
 {
     
@@ -339,7 +351,8 @@ dataChannel.onopen = onOpenChannelCallback;
 dataChannel.onclose = onClosedChannelCallBack;  
 
 }
-/*
+
+
 function setupMyVideo()
 {
 
@@ -701,6 +714,11 @@ screenShareButton.onclick = async()=>
                              track.onended = async()=>{
                             // dataChannel.send({screenSharingStarted: false, screenSharingEnded: ended});
                              localStream.getVideoTracks().forEach((track)=>{
+							  
+							 isSharingScreen = false;  
+							 screenShareButton.classList.remove("green");
+							 screenShareButton.classList.add("blue");
+							
                              track.contentHint = "peerVideo";
                              rtc_sender_video.replaceTrack(track);
         
@@ -722,11 +740,7 @@ screenShareButton.onclick = async()=>
         }
         else if(isSharingScreen === true)
         {
-          isSharingScreen = false;
-        
-
-		  screenShareButton.classList.remove("green");
-          screenShareButton.classList.add("blue");
+         
 
           // dataChannel.send({screenSharingStarted: false, screenSharingEnded: true});
          await localStream.getVideoTracks().forEach((track)=>{
