@@ -64,7 +64,20 @@ border-block-end-color: black;
 
 
 
- 
+ .signin
+ {
+
+	z-index: 4;
+	padding-top:0;
+	 
+	 
+ }
+ .logo
+ {
+	 padding:5px;
+	 
+	 
+ }
   /*
 
 

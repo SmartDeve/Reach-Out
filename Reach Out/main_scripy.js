@@ -29,6 +29,9 @@ const localVideo = document.getElementById('localVideo');
 let dialogInnerText = document.getElementById('dialogText');
 const socketIds = new Map();
 const callRequestDialog = document.querySelector('dialog');
+
+//const callRequestModal = M.Modal.init(document.querySelector('.modal'));
+//.open();
 const remoteVideo = document.getElementById('remoteVideo');
 const camButton = document.getElementById('camButton');
 const callButton = document.getElementById('callButton');
@@ -103,15 +106,10 @@ call_block.onmouseover = async ()=>
     callEndButton.classList.add("scale-in");
     micButton.classList.add("scale-in");
     camButton.classList.add("scale-in");
-
     screenShareButton.classList.remove("scale-out");
     callEndButton.classList.remove("scale-out");
     micButton.classList.remove("scale-out");
     camButton.classList.remove("scale-out");
-
-
-
-
 }
 
 
@@ -488,10 +486,11 @@ async function onMessage1({desc, candid})
 
 
 callAcceptButton.onclick = async ()=>
-{
+{	
+	tonePlayer.pause();
     answer_details.acceptance = true;
     callRequestDialog.open = false;
-
+    //callRequestModal.close();
     caller_mode.hidden = true;
     video_caller_mode.hidden = false;
     document.body.style.backgroundColor = "black";
@@ -523,9 +522,10 @@ callAcceptButton.onclick = async ()=>
 callRejectButton.onclick = async ()=>{
 
 
-
+	tonePlayer.pause();
     answer_details.acceptance = false;
-    callRequestDialog.open = false;
+   callRequestDialog.open = false;
+     //   callRequestModal.close();
     socket.emit('send_call_answer',answer_details);
 
 
@@ -542,6 +542,9 @@ socket.on('call_request',(caller_data)=>{
     answer_details = {reciever_id:caller_data.caller_soc_id, sender_id:myId};
     dialogInnerText.innerText = name + " is Video Calling You";
     callRequestDialog.open = true;
+    callRequestModal.open();
+	tonePlayer.srcObject="incoming_caller_tone.mp3";
+	tonePlayer.play();
 
     /*
 
@@ -622,7 +625,7 @@ function recieveVideoCall()
  function  startVideoCall()
 {    
     try{
-    await navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
+    navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
     {   
         localStream = mediastream;    
         localVideo.srcObject = mediastream;
