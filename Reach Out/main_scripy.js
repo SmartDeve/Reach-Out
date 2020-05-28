@@ -543,7 +543,7 @@ socket.on('call_request',(caller_data)=>{
     dialogInnerText.innerText = name + " is Video Calling You";
     callRequestDialog.open = true;
     callRequestModal.open();
-	tonePlayer.srcObject="incoming_caller_tone.mp3";
+	tonePlayer.src="incoming_caller_tone.mp3";
 	tonePlayer.play();
 
     /*
@@ -583,7 +583,7 @@ socket.on('requested_caller_details',(caller_details)=>
          call_request_object.caller_soc_id = myId;
          call_request_object.callee_id = callDetails.callee_id;
          console.log(call_request_object);
-         tonePlayer.srcObject = "callerTone.mp3";
+         tonePlayer.src = "callerTone.mp3";
          tonePlayer.play();
          socket.emit('send_call_request',call_request_object);
 
