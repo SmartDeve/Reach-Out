@@ -542,7 +542,7 @@ socket.on('call_request',(caller_data)=>{
     answer_details = {reciever_id:caller_data.caller_soc_id, sender_id:myId};
     dialogInnerText.innerText = name + " is Video Calling You";
     callRequestDialog.open = true;
-    callRequestModal.open();
+    //callRequestModal.open();
 	tonePlayer.src="incoming_caller_tone.mp3";
 	tonePlayer.play();
 
