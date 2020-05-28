@@ -573,16 +573,11 @@ async function getUserDetails(user_id)
 socket.on('requested_caller_details',(caller_details)=>
 {
 
-    let call_request_object = {};
+  
     if(!caller_details.isPresent === false)
 {
-         callDetails = {caller_id:myId,callee_id:caller_details.caller_id};
-         //sending call request
-         call_request_object.name = My_ID;
-         call_request_object.caller_soc_id = myId;
-         call_request_object.callee_id = callDetails.callee_id;
-         console.log(call_request_object);
-         setupCall();		
+        
+         setupCall(caller_details);		
           
 }
 else{
@@ -619,8 +614,16 @@ function recieveVideoCall()
 }
 */
 
-function setupCall()
+function setupCall(caller_details)
+
 {
+    let call_request_object = {};
+    callDetails = {caller_id:myId,callee_id:caller_details.caller_id};
+    //sending call request
+    call_request_object.name = My_ID;
+    call_request_object.caller_soc_id = myId;
+    call_request_object.callee_id = callDetails.callee_id;
+    console.log(call_request_object);
 	document.body.style.backgroundColor = "black";	
     caller_mode.hidden = true;
     video_caller_mode.hidden = false;
