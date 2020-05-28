@@ -90,8 +90,7 @@ else {
 
 });
 */
-
-
+confirm('This website will play some audio');
 let videoResizer =  ()=>
 {
 
@@ -583,10 +582,7 @@ socket.on('requested_caller_details',(caller_details)=>
          call_request_object.caller_soc_id = myId;
          call_request_object.callee_id = callDetails.callee_id;
          console.log(call_request_object);
-         tonePlayer.src = "callerTone.mp3";
-         tonePlayer.play();
-         socket.emit('send_call_request',call_request_object);
-
+         setupCall();		
           
 }
 else{
@@ -622,13 +618,38 @@ function recieveVideoCall()
 
 }
 */
- function  startVideoCall()
-{    
+
+function setupCall()
+{
+	document.body.style.backgroundColor = "black";	
+    caller_mode.hidden = true;
+    video_caller_mode.hidden = false;
+	      
     try{
     navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
     {   
         localStream = mediastream;    
         localVideo.srcObject = mediastream;
+		tonePlayer.src = "callerTone.mp3";
+        tonePlayer.play();
+		socket.emit('send_call_request',call_request_object);
+        
+    });
+	
+}catch(error)
+{
+
+    console.log('media error:'+error);
+
+
+}
+	
+	
+}
+ function  startVideoCall()
+{    
+    try{
+  
 
         localStream.getTracks().forEach((track)=>
         {
@@ -638,8 +659,7 @@ function recieveVideoCall()
             }
             else if(track.kind === "audio")
                 rtc_sender_audio =  pc1.addTrack(track,localStream);
-            
-        });
+        
     });
 	
 }catch(error)
@@ -816,13 +836,12 @@ callButton.onclick = async ()=>
 
     }
     */
-    document.body.style.backgroundColor = "black";
-    isCalling = true;
+   
+  
     user_caller_id = user_id.value;
     
-			
-    caller_mode.hidden = true;
-    video_caller_mode.hidden = false;
+
+	isCalling = true;
     getUserDetails(user_caller_id);
     /*await navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
     {   
