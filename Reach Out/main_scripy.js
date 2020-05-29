@@ -75,7 +75,14 @@ screenShareButton.enabled = false;
 audioRequestDialog.open = true;
 
 
-
+  document.onmousedown = (e)=>
+  {
+		if(e.button == 2)
+			return false;
+	  
+	  
+	  
+  };
 
 /*
 localVideo.addEventListener('loadedmetadata',async()=>{
