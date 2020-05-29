@@ -285,7 +285,7 @@ console.log(error);
 pc1.ontrack =  async(event) =>
 {
    
-    let recievedStream = event.streams[0];
+   
 /*
     let videoTrackKind = recievedStream.getVideoTracks()[0].contentHint;
 
@@ -523,9 +523,10 @@ callAcceptButton.onclick = async ()=>
     document.body.style.backgroundColor = "black";
     await navigator.mediaDevices.getUserMedia({video:true, audio: true}).then((mediastream)=>
     {   
-        localStream = mediastream;    
+        localStream = mediastream;
+        
         localVideo.srcObject = mediastream;
-      
+        localVideo.muted = true;    
     });
 /*
 
@@ -661,6 +662,7 @@ function setupCall(caller_details)
     {   
         localStream = mediastream;    
         localVideo.srcObject = mediastream;
+        localVideo.muted = true;
 		tonePlayer.src = "callerTone.mp3";
         tonePlayer.play();
 		socket.emit('send_call_request',call_request_object);
