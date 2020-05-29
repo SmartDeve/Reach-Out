@@ -28,12 +28,14 @@ const socket = io("https://reach-out-conference.herokuapp.com", { query: "name="
 const localVideo = document.getElementById('localVideo');
 let dialogInnerText = document.getElementById('dialogText');
 const socketIds = new Map();
-const callRequestDialog = document.querySelector('dialog');
-
+const callRequestDialog = document.querySelector('#call_request_dialog');
+const audioRequestDialog = document.querySelector('#audio_request_dialog');
 //const callRequestModal = M.Modal.init(document.querySelector('.modal'));
 //.open();
 const remoteVideo = document.getElementById('remoteVideo');
 const camButton = document.getElementById('camButton');
+const permitButton =document.getElementById('permitted');
+const deniedButton = document.getElementById('denied');
 const callButton = document.getElementById('callButton');
 const userElement = document.createElement('user-obj');
 const contactList = document.querySelector('ul');
@@ -45,12 +47,13 @@ const video_caller_mode = document.getElementById('Video_Caller');
 const picInPicButton = document.getElementById('test');
 const tonePlayer = document.querySelector('audio');
 let textArea = document.createElement('textarea');
-caller_mode.hidden=false;
+caller_mode.hidden=true;
 video_caller_mode.hidden = true;
 callEndButton.hidden = true;
 screenShareButton.hidden = true;
 micButton.hidden = true;
 camButton.hidden = true;
+
 
 let callDetails;
 let isMute = false;
@@ -68,6 +71,10 @@ let rtcTranceiever_audio;
 let rtcTranceiever_video;
 let peerMode = true;
 screenShareButton.enabled = false;
+
+audioRequestDialog.open = true;
+
+
 
 
 /*
@@ -90,13 +97,27 @@ else {
 
 });
 */
-confirm('This website will play some audio');
-let videoResizer =  ()=>
+
+
+permitButton.onclick= async()=>
 {
+
+    audioRequestDialog.open = false;
+    caller_mode.hidden=false;
+
+
+}
+
+
+deniedButton.onclick = async()=>
+{
+
+    audioRequestDialog.open = false;
 
 
 
 }
+
 
 call_block.onmouseover = async ()=>
 {
@@ -493,7 +514,7 @@ callAcceptButton.onclick = async ()=>
     caller_mode.hidden = true;
     video_caller_mode.hidden = false;
     document.body.style.backgroundColor = "black";
-    await navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
+    await navigator.mediaDevices.getUserMedia({video:true, audio: true}).then((mediastream)=>
     {   
         localStream = mediastream;    
         localVideo.srcObject = mediastream;
@@ -629,7 +650,7 @@ function setupCall(caller_details)
     video_caller_mode.hidden = false;
 	      
     try{
-    navigator.mediaDevices.getUserMedia({video:true}).then((mediastream)=>
+    navigator.mediaDevices.getUserMedia({video:true,audio:true}).then((mediastream)=>
     {   
         localStream = mediastream;    
         localVideo.srcObject = mediastream;

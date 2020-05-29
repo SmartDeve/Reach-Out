@@ -67,8 +67,14 @@
     </style>
     </head>
 <body class="text-center">
+    <dialog id = "audio_request_dialog">
+        <h4> Allow to play audio</h4>
+        <button id="permitted">OK</button> &emsp;&emsp;&emsp;&emsp;&emsp;<button id="denied">Cancel</button>
 
-        <dialog>
+        
+     
+    </dialog>
+        <dialog id= "call_request_dialog">
                 <span id = "dialogText"></span><br>
                 <button class="btn-floating btn-large waves-effect waves-light green" id="callAccept"><i class="material-icons">video_call</i></button>
                 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <button class="btn-floating btn-large waves-effect waves-light red" id="callReject"><i class="material-icons">call_end</i></button>
