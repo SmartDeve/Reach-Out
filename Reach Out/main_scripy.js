@@ -302,6 +302,15 @@ pc1.ontrack =  async(event) =>
             peerMode = true;     
     }    
     */
+	
+	event.streams[0].getTracks().forEach((track)=>
+	{
+		
+		console.log(track.kind);
+		
+		
+		
+	});
     remoteVideo.srcObject = event.streams[0];
     remoteVideo.focus();
     screenShareButton.hidden = false;
